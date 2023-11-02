@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connect to Metamask</title>
+</head>
+<body>
+    <button id="connectButton">Connect to Metamask</button>
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script>
+        const connectButton = document.getElementById('connectButton');
+
+        connectButton.addEventListener('click', async () => {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // 请求用户授权连接Metamask钱包
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                    // 创建Web3实例
+                    const web3 = new Web3(window.ethereum);
+
+                    // 获取账户信息
+                    const accounts = await web3.eth.getAccounts();
+
+                    // 输出已连接的账户
+                    if (accounts.length > 0) {
+                        alert('Connected to Metamask. Your account: ' + accounts[0]);
+                    } else {
+                        alert('Metamask is not connected or no accounts found.');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert('Failed to connect to Metamask. Please make sure it is installed and unlocked.');
+                }
+            } else {
+                alert('Metamask is not detected. Please install it to use this feature.');
+            }
+        });
+    </script>
+</body>
+</html>
